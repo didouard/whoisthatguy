@@ -1,64 +1,37 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import {Typeahead} from 'react-bootstrap-typeahead'; // ES2015
+import {
+    Route,
+    NavLink,
+    HashRouter
+} from "react-router-dom";
+import Search from "./Search";
+import User from "./User";
 
 class App extends Component {
-    constructor(props) {
-	super(props);
 
-	this.state = {
-	    users: []
-	    , isLoading: true
-	};
-    }
-
-    componentDidMount() {
-	fetch('http://192.168.113.42:8080/users')
-	    .then(response => response.json())
-	    .then(data => this.setState({ users: data.users, isLoading: false }));
-    }
-    
     render() {
-	const {users, isLoading} = this.state;
-		
-	if (isLoading == true) return (<div>Loading... </div>);
-
-	return ( 
-		<div className="App">
+	return (
+	    <HashRouter>
+	      <div className="App">
 		<div>{this.test} hello</div>
 		<header className="App-header">
-		<img src={logo} className="App-logo" alt="logo" />
-		<h1 className="App-title">Welcome to React</h1>
-            </header>
-		<p className="App-intro">
-	    To get started, edit <code>src/App.js</code> and save to reload.
-            </p>
-	    
-		<div class="container">
-		<div class="row">
-		<div class="col-sm">
-	    One of three columns
-	    </div>
-		<div class="col-sm">
-	    One of three columns
-	    </div>
-		<div class="col-sm">
-	    One of three columns
-	    </div>
-	    </div>
-	    </div>
-		<Fragment>
-		<Typeahead
-	    labelKey="name"
-	    options={users}
-	    
-	    placeholder="Choose a state..."
-		/>
-	    
-	    </Fragment>
-	    </div>
-
+		  <img src={logo} className="App-logo" alt="logo" />
+		  <h1 className="App-title">Whois This Guys Again ?</h1>
+		  <ul className="header">
+		    <li><NavLink to="/">Search</NavLink></li>
+		    <li><NavLink to="/user">User</NavLink></li>
+		  </ul>
+		</header>
+		<div className="content">
+		  <Route path="/" component={Search}/>
+		  <Route path="/search" component={Search}/>
+		  <Route path="/user" component={User}/>
+		</div>
+	      </div>
+	    </HashRouter>
+		
 	);
     }
 }
