@@ -3,7 +3,10 @@ import React, { Component } from 'react';
 class User extends Component {
     constructor(props) {
         super(props);
-        this.state = {user: {}};
+        this.state = {
+	    user: {}
+	    , isLoading: true
+	};
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -18,8 +21,31 @@ class User extends Component {
 	    [name]: value
 	});
 
-	console.log("Querystring", this.props.location.search);
     }
+
+    componentDidMount() {
+	console.log("Querystring", this.props.location.search);
+
+	var regex = /\/user\/([0-9]*)/;
+	var match = this.props.location.pathname.match(regex);
+	var id = 0;
+
+	if ((match instanceof Array) && match.length > 0) {
+	    id = match[1];
+	    console.log("id = " + id);
+	} else {
+	    console.log("info : Query string not parsable");
+	    return ;
+	}
+	
+	fetch('http://192.168.113.42:8080/user/' + id)
+	    .then(response => response.json())
+	    .then(data => {
+		console.log(data);
+		this.setState({ user: data.user, isLoading: false });
+	    });
+    }
+
     
     /*handleChange(event) {
 	console.log(event.target.value);
@@ -60,15 +86,13 @@ class User extends Component {
 	        Firstname:
 	        <input type="text"
 		       name="firstname"
-		       value={this.state.user.fistname}
-		       onChange={this.handleChange} />
+		       value={this.state.user.firstname} />
 	      </label>
 	      <label>
 	        Lastname:
 	        <input type="text"
 		       name="lastname"
-		       value={this.state.user.lastname}
-		       onChange={this.handleChange} />
+		       value={this.state.user.lastname} />
 	      </label>
 	      <input type="submit" value="Save" />
 	    </form>
