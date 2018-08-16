@@ -17,6 +17,8 @@ class User extends Component {
 	this.setState({
 	    [name]: value
 	});
+
+	console.log("Querystring", this.props.location.search);
     }
     
     /*handleChange(event) {
@@ -68,7 +70,7 @@ class User extends Component {
 		       value={this.state.user.lastname}
 		       onChange={this.handleChange} />
 	      </label>
-	      <input type="submit" value="Submit" />
+	      <input type="submit" value="Save" />
 	    </form>
 	);
     }

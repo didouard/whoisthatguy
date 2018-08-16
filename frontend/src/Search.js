@@ -2,11 +2,17 @@ import React, { Component } from 'react';
 import {Typeahead} from 'react-bootstrap-typeahead'; // ES2015
 import {NavLink} from "react-router-dom";
 
+var sprops = {};
+
 class Search extends Component {
+    
+    
     constructor(props) {
 	super(props);
 
-    this.state = {
+	sprops = props;
+	
+	this.state = {
 	    users: []
 	    , isLoading: true
 	};
@@ -16,6 +22,13 @@ class Search extends Component {
 	fetch('http://192.168.113.42:8080/users')
 	    .then(response => response.json())
 	    .then(data => this.setState({ users: data.users, isLoading: false }));
+    }
+
+    typeAheadOnChange(e) {
+	if (e.length > 0) {
+	    console.log(e[0].firstname + " " + e[0].lastname);
+	    sprops.history.push('/user/'+e[0].id);
+	}
     }
     
     render() {
@@ -29,9 +42,10 @@ class Search extends Component {
 		<div className="col-sm"></div>
 		<div className="col-7">
 		  <Typeahead
-		     labelKey="name"
+		     labelKey={option => `${option.firstname} ${option.lastname}`}
 		     options={users}
 		     placeholder="Find someone ?"
+		     onChange={this.typeAheadOnChange}
 		     />
 		</div>
 		<div className="col-sm">
