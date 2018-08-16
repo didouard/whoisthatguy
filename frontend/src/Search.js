@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Typeahead} from 'react-bootstrap-typeahead'; // ES2015
-import {Route, NavLink, HashRouter} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 class Search extends Component {
     constructor(props) {
